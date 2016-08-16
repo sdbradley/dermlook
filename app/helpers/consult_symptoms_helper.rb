@@ -1,0 +1,2 @@
+module ConsultSymptomsHelper
+end

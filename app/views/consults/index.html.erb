@@ -1,0 +1,29 @@
+<div style="padding:10px;">
+	<h3>Consults</h3>
+</div>
+<% if @consults != nil && @consults.length > 0 %>
+	<% @consults.each do |c| %>
+		<% us = @users.where(UserKey: c.UserKey).take %>
+		<% if (us != nil) %>
+		<div style="margin-bottom:10px;border-top:solid 1px #ccc;padding:10px;">
+			<div class="col-sm-10">
+				<div><%= Time.at(c.ConsultDate).to_datetime.strftime('%m/%d/%Y %H:%M') %></div>
+				<div><%= us.FirstName %> <%= us.LastName %> (<%= us.EmailAddress %>)</div>
+				<% if (isPatientEntered(c) && c.PatientKey != nil) %>
+					<% p = @patients.where(PatientKey: c.PatientKey).take %>
+					<% if (p != nil) %>
+						<div>PATIENT: <%= p.FirstName %> <%= p.LastName %></div>
+					<% end %>
+				<% end %>
+			</div>
+			<div class="col-sm-2 right">
+				<a href="<%= consult_path(c.ConsultKey) %>" class="btn btn-sm btn-primary">Open</a>
+				<button class="btn btn-sm btn-danger">Delete</button>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<% end %>
+	<% end %>
+<% elsif %>
+	<div>Could not locate any Consults</div>
+<% end %>

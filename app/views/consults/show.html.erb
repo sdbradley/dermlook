@@ -1,0 +1,45 @@
+<div style="padding:10px;">
+	<h3>Consult Details</h3>
+	<div><%= Time.at(@consult.ConsultDate).to_datetime.strftime('%m/%d/%Y %H:%M') %></div>
+	<% us = @users.where(UserKey: @consult.UserKey).take %>
+	<% if (us != nil) %>
+		<div><%= us.FirstName %> <%= us.LastName %> (<%= us.EmailAddress %>)</div>
+		<% if (isPatientEntered(@consult) && @consult.PatientKey != nil) %>
+			<% p = @patients.where(PatientKey: c.PatientKey).take %>
+			<% if (p != nil) %>
+				<div>PATIENT: <%= p.FirstName %> <%= p.LastName %></div>
+			<% end %>
+		<% end %>
+	<% end %>
+	<div>
+		<h4>Symptoms</h4>
+		<% @consultsymptoms.each_with_index do |cs, index| %>
+			<% cs1 = @symptoms.where(SymptomKey: cs.SymptomKey).take %>
+			<% if (index > 0) %>, <% end %> 
+			<%= cs1.Name %>
+		<% end %>
+	</div>
+	<div>
+		<h4>Conditions</h4>
+		<% @consultconditions.each_with_index do |cc, index| %>
+			<% cc1 = @conditions.where(ConditionKey: cc.ConditionKey).take %>
+			<% if (index > 0) %>, <% end %> 
+			<%= cc1.Name %>
+		<% end %>
+	</div>
+	<div>
+		<h4>Images</h4>
+		<% @images.each do |img| %>
+			<div style="display:inline-block;">
+				<%= ('<img src="data:image/jpg;base64,%s">' % Base64.encode64(img.Data)).html_safe %>
+			</div>
+		<% end %>
+	</div>
+	<div>
+		<h4>Diagnosis</h4>
+		<% @consultdiagnoses.each do |cd| %>
+			<div><%= cd.Diagnosis %></div>
+			<div><%= cd.TreatmentPlan %></div>
+		<% end %>
+	</div>
+</div>

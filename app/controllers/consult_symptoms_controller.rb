@@ -1,0 +1,2 @@
+class ConsultSymptomsController < ApplicationController
+end

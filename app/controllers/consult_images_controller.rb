@@ -1,0 +1,2 @@
+class ConsultImagesController < ApplicationController
+end
